@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>김준철 — FP&A 경영기획 전문가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #c8a96e;
+    --accent2: #e8d5a3;
+    --text: #e8e8e0;
+    --muted: #888880;
+    --dim: #555550;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: rgba(14,14,14,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    font-weight: 400;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 40%, rgba(200,169,110,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(200,169,110,0.04) 0%, transparent 60%);
+  }
+
+  .hero-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 32px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 8vw, 120px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 32px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    align-items: flex-end;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 48px;
+    background: var(--border);
+    align-self: center;
+  }
+
+  .hero-desc {
+    max-width: 340px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    right: 48px;
+    writing-mode: vertical-rl;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: scrollBob 2s ease-in-out infinite;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  @keyframes scrollBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 64px;
+    color: var(--text);
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .skill-card {
+    background: var(--surface);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .skill-card:hover { background: var(--surface2); }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+
+  .skill-card:hover::before { height: 100%; }
+
+  .skill-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+
+  .skill-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .skill-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── CAREER TIMELINE ── */
+  .career-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .career-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0 48px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    cursor: default;
+    transition: background 0.2s;
+  }
+
+  .career-item:hover { background: rgba(200,169,110,0.02); }
+
+  .career-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+  }
+
+  .career-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .career-duration {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+  }
+
+  .career-right {}
+
+  .career-company {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .career-role {
+    font-size: 13px;
+    color: var(--accent2);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .career-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 600px;
+  }
+
+  .career-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .project-card:hover { background: var(--surface2); }
+
+  .project-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: rgba(200,169,110,0.08);
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .project-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  .project-company-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 3px 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .project-result {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .project-kpi {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: rgba(200,169,110,0.06);
+    border-left: 2px solid var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── CREDENTIALS ── */
+  .creds-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .cred-card {
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    transition: border-color 0.3s;
+  }
+
+  .cred-card:hover { border-color: var(--accent); }
+
+  .cred-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cred-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .cred-detail {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    text-align: center;
+    padding: 120px 48px;
+  }
+
+  .contact-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .contact-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 48px;
+    color: var(--text);
+  }
+
+  .contact-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .contact-link:hover { opacity: 0.7; }
+
+  .contact-link-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .contact-link-value {
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    .hero { padding: 0 24px 64px; }
+    section { padding: 64px 24px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .creds-grid { grid-template-columns: 1fr; }
+    .career-item { grid-template-columns: 1fr; gap: 12px; }
+    .hero-meta { flex-direction: column; gap: 24px; align-items: flex-start; }
+    .hero-scroll { display: none; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">KJC · Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">소개</a></li>
+    <li><a href="#career">경력</a></li>
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#credentials">자격</a></li>
+    <li><a href="#contact">연락처</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+  <div class="hero-number">— 01 / INTRODUCTION</div>
+  <h1 class="hero-title">
+    김준철<br>
+    <em>FP · A</em>
+  </h1>
+  <p class="hero-sub">경영기획 · 재무전략 · 성과관리</p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hero-stat-num">15</span>
+      <span class="hero-stat-label">Years of Experience</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">5</span>
+      <span class="hero-stat-label">Companies</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">8+</span>
+      <span class="hero-stat-label">Major Projects</span>
+    </div>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      재무회계·관리회계·원가회계 전반을 아우르는 FP&A 전문가.<br>
+      데이터를 경영진의 언어로 번역하고, 실행 가능한 전략으로 연결합니다.
+    </p>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">— 02 / CORE COMPETENCIES</div>
+  <h2 class="section-title">핵심 역량</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card fade-up">
+      <div class="skill-icon">01 · FP&A</div>
+      <div class="skill-name">재무기획 · 분석</div>
+      <div class="skill-desc">사업계획 수립, 예산 관리, 현금흐름 분석, DCF Valuation, WACC 분석을 통한 법인 가치평가까지 FP&A 전 영역을 커버합니다.</div>
+    </div>
+    <div class="skill-card fade-up" style="transition-delay:0.1s">
+      <div class="skill-icon">02 · KPI</div>
+      <div class="skill-name">KPI 설계 · 성과관리</div>
+      <div class="skill-desc">전사 ROIC 기반 KPI 체계 설계, 본부별 목표 배분, 영업·생산·관리 각 부문의 성과 지표를 정량화하고 관리합니다.</div>
+    </div>
+    <div class="skill-card fade-up" style="transition-delay:0.2s">
+      <div class="skill-icon">03 · ACCOUNTING</div>
+      <div class="skill-name">관리회계 · 원가관리</div>
+      <div class="skill-desc">관리회계, 재무회계, 원가회계, 세무회계 전반 보유. 표준원가 설계, 공헌이익 분석, 세무조사 대응 경험 다수.</div>
+    </div>
+    <div class="skill-card fade-up" style="transition-delay:0.3s">
+      <div class="skill-icon">04 · ERP</div>
+      <div class="skill-name">ERP 구축 · 운영</div>
+      <div class="skill-desc">SAP CO 모듈 전문가 (SAP Korea 수료), Oracle Cloud ERP PMO 참여. 국가별 ERP 커스터마이징 및 COA 맵핑 경험 보유.</div>
+    </div>
+    <div class="skill-card fade-up" style="transition-delay:0.4s">
+      <div class="skill-icon">05 · GLOBAL</div>
+      <div class="skill-name">해외법인 관리</div>
+      <div class="skill-desc">미국·카자흐스탄·베트남·중국 해외법인 경영기획 및 관리손익 시스템 구축. 글로벌 레포팅 체계 설계 경험.</div>
+    </div>
+    <div class="skill-card fade-up" style="transition-delay:0.5s">
+      <div class="skill-icon">06 · STRATEGY</div>
+      <div class="skill-name">경영전략 · 신사업</div>
+      <div class="skill-desc">중장기 전략 수립, 사업타당성 분석, M/A 검토, IPO 검토, 사업부 매각 TFT 참여. 라이선싱 신사업 기획 경험.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="section-label">— 03 / CAREER HISTORY</div>
+  <h2 class="section-title">경력 사항<br><em style="font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:0.55em;">총 14년 8개월</em></h2>
+
+  <div class="career-list">
+
+    <div class="career-item fade-up">
+      <div class="career-left">
+        <span class="career-period">2025.11 — 현재</span>
+        <span class="career-duration">재직 중</span>
+      </div>
+      <div class="career-right">
+        <div class="career-company">종근당건강(주)</div>
+        <div class="career-role">지속경영실 사업관리팀 · 차장 (팀장) · 연봉 8,000만원</div>
+        <div class="career-desc">
+          건강기능식품 제조·판매 / 매출 5,000억 / 임직원 300명.<br>
+          전사 KPI 체계 설계(ROIC 핵심지표, 본부별 영업이익 60%·도전과제 30%·AI 10% 구성), 연간/중장기 사업계획 수립, 채널별·품목별 관리손익 운영, 이사회·IR 관리.
+        </div>
+        <div class="career-tags">
+          <span class="tag">사업계획</span>
+          <span class="tag">KPI 설계</span>
+          <span class="tag">ROIC</span>
+          <span class="tag">관리손익</span>
+          <span class="tag">이사회</span>
+          <span class="tag">IR</span>
+          <span class="tag">M/A 검토</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="career-item fade-up">
+      <div class="career-left">
+        <span class="career-period">2024.09 — 2025.11</span>
+        <span class="career-duration">1년 3개월</span>
+      </div>
+      <div class="career-right">
+        <div class="career-company">오픈헬스케어</div>
+        <div class="career-role">경영기획실 · 차장</div>
+        <div class="career-desc">
+          씨젠의료재단 1천억 출자 해외의료사업 스타트업 (미국·카자흐스탄·베트남).<br>
+          해외 3개 법인 관리손익 시스템 구축, ERP 커스터마이징, DCF Valuation, 글로벌 레포팅 체계 셋업.
+        </div>
+        <div class="career-tags">
+          <span class="tag">해외법인</span>
+          <span class="tag">관리손익</span>
+          <span class="tag">DCF Valuation</span>
+          <span class="tag">ERP</span>
+          <span class="tag">글로벌 레포팅</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="career-item fade-up">
+      <div class="career-left">
+        <span class="career-period">2019.08 — 2024.09</span>
+        <span class="career-duration">5년 2개월</span>
+      </div>
+      <div class="career-right">
+        <div class="career-company">건일제약(주)</div>
+        <div class="career-role">재무팀 · 팀원</div>
+        <div class="career-desc">
+          연결매출 1,500억 중견제약사 (오마코·비오플 주력).<br>
+          전사 KPI 목표 관리, 경영기획·전략수립, 구매예산 프로세스 신설 및 재고회전일 단축 개선, 원가관리, 세무조사 대응.
+        </div>
+        <div class="career-tags">
+          <span class="tag">KPI 관리</span>
+          <span class="tag">경영기획</span>
+          <span class="tag">구매예산</span>
+          <span class="tag">재고회전일</span>
+          <span class="tag">원가관리</span>
+          <span class="tag">세무조사</span>
+          <span class="tag">SAP CO</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="career-item fade-up">
+      <div class="career-left">
+        <span class="career-period">2014.01 — 2019.07</span>
+        <span class="career-duration">5년 7개월</span>
+      </div>
+      <div class="career-right">
+        <div class="career-company">마제스티골프코리아</div>
+        <div class="career-role">기획관리팀 · 대리</div>
+        <div class="career-desc">
+          국내 골프클럽 매출 Top 5, 일본상장(마루망), GS그룹 계열 / 매출 1,000억.<br>
+          전사 KPI 목표 설정·관리, 글로벌 지주사 해외 자회사 Financial Plan Pack 작성, IPO·순환출자 검토, Oracle Cloud ERP PMO.
+        </div>
+        <div class="career-tags">
+          <span class="tag">전략기획</span>
+          <span class="tag">KPI</span>
+          <span class="tag">해외자회사</span>
+          <span class="tag">Oracle ERP</span>
+          <span class="tag">IPO 검토</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="career-item fade-up">
+      <div class="career-left">
+        <span class="career-period">2011.07 — 2013.12</span>
+        <span class="career-duration">2년 6개월</span>
+      </div>
+      <div class="career-right">
+        <div class="career-company">와이드</div>
+        <div class="career-role">재무기획팀 · 사원</div>
+        <div class="career-desc">
+          의료용모니터 수출 중소기업 / 매출 200억.<br>
+          법인 결산, P/L·B/S·MCS 작성, 자금·세무·감사, KPI 목표 관리.
+        </div>
+        <div class="career-tags">
+          <span class="tag">결산</span>
+          <span class="tag">재무회계</span>
+          <span class="tag">세무</span>
+          <span class="tag">KPI</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">— 04 / KEY PROJECTS</div>
+  <h2 class="section-title">주요 프로젝트</h2>
+
+  <div class="projects-grid">
+
+    <div class="project-card fade-up">
+      <div class="project-num">01</div>
+      <div class="project-period">2023.01 — 2023.03</div>
+      <div class="project-company-badge">건일제약</div>
+      <div class="project-title">영업 KPI 재설정 프로젝트</div>
+      <div class="project-result">지역별·품목별·영업사원별 코호트 분석으로 공헌이익 및 ROI를 산출하고, 인센티브 구조를 재설계. 도매상 할인율·여신한도 Logic 명확화.</div>
+      <div class="project-kpi">영업 ROI 20%대 → 30%대 개선 (1년)</div>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.1s">
+      <div class="project-num">02</div>
+      <div class="project-period">2022.01 — 2022.04</div>
+      <div class="project-company-badge">건일제약</div>
+      <div class="project-title">원가 절감 프로젝트</div>
+      <div class="project-result">공장 합숙을 통한 공정별 표준공수 재측정, 원재료 계약 및 회전일 분석, 수익성 낮은 공정 폐쇄 후 수직계열화 추진.</div>
+      <div class="project-kpi">제품원가율 1년내 5% 개선</div>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.2s">
+      <div class="project-num">03</div>
+      <div class="project-period">2021.01 — 2021.02</div>
+      <div class="project-company-badge">건일제약</div>
+      <div class="project-title">예산 효율화 프로젝트</div>
+      <div class="project-result">매출계획 확정 후 본부별·팀별·계정별 예산 자동배분 Logic 구성. KPI 기반 예산배부로 예산 편성 Argue 방지.</div>
+      <div class="project-kpi">사업계획 수립 일정 1개월 단축</div>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.3s">
+      <div class="project-num">04</div>
+      <div class="project-period">2024.10 — 2024.12</div>
+      <div class="project-company-badge">오픈헬스케어</div>
+      <div class="project-title">해외법인 관리손익 시스템 구축</div>
+      <div class="project-result">미국·카자흐스탄·베트남 3개 법인 ERP 커스터마이징, COA 맵핑, 글로벌 레포트 양식 셋업 및 협업체계 정립.</div>
+      <div class="project-kpi">3개 법인 영업일 10일 이내 손익 레포팅 달성</div>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.4s">
+      <div class="project-num">05</div>
+      <div class="project-period">2018.05 — 2018.09</div>
+      <div class="project-company-badge">마제스티골프코리아</div>
+      <div class="project-title">Oracle Cloud ERP 구축 PMO</div>
+      <div class="project-result">기존 GS그룹 자체 ERP를 Oracle Cloud로 전환. 해외계열사 전산 통합, Product Cost 개별원가시스템 구현, 전 모듈 슈퍼유저.</div>
+      <div class="project-kpi">전사 업무효율 증대 · 위조품·병행수입 원천차단</div>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.5s">
+      <div class="project-num">06</div>
+      <div class="project-period">2016.12 — 2016.12</div>
+      <div class="project-company-badge">마제스티골프코리아</div>
+      <div class="project-title">중국법인 Contingency Plan</div>
+      <div class="project-result">현지 출장 합숙을 통한 중저가 전략 전환, 지사 폐쇄, 한국 법인 로테이션을 통한 재고 소화.</div>
+      <div class="project-kpi">적자폭 3배 감소 · 재고회전일 평균 3개월 단축</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section id="credentials">
+  <div class="section-label">— 05 / CREDENTIALS</div>
+  <h2 class="section-title">자격 및 학력</h2>
+
+  <div class="creds-grid">
+    <div class="cred-card fade-up">
+      <div class="cred-type">Education</div>
+      <div class="cred-name">홍익대학교 (서울)</div>
+      <div class="cred-detail">경영학과 · 학사 · GPA 3.5/4.5<br>2004.03 — 2011.08</div>
+    </div>
+    <div class="cred-card fade-up" style="transition-delay:0.1s">
+      <div class="cred-type">Certificate</div>
+      <div class="cred-name">원가관리사</div>
+      <div class="cred-detail">한국생산성본부<br>취득 2019.12</div>
+    </div>
+    <div class="cred-card fade-up" style="transition-delay:0.2s">
+      <div class="cred-type">Language</div>
+      <div class="cred-name">TOEIC 860점</div>
+      <div class="cred-detail">영어 회화 중급<br>취득 2011.01</div>
+    </div>
+    <div class="cred-card fade-up" style="transition-delay:0.3s">
+      <div class="cred-type">ERP Training</div>
+      <div class="cred-name">SAP CO Blended</div>
+      <div class="cred-detail">SAP Korea · CO 모듈 전문가 과정<br>2022.11 — 2023.01</div>
+    </div>
+    <div class="cred-card fade-up" style="transition-delay:0.4s">
+      <div class="cred-type">Certificate</div>
+      <div class="cred-name">MOS</div>
+      <div class="cred-detail">Microsoft Office Specialist<br>취득 2009.01</div>
+    </div>
+    <div class="cred-card fade-up" style="transition-delay:0.5s">
+      <div class="cred-type">ERP Expertise</div>
+      <div class="cred-name">Oracle Cloud ERP</div>
+      <div class="cred-detail">PMO Staff · All Module Superuser<br>FI / CO / Product Cost</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-eyebrow">— 06 / CONTACT</div>
+  <div class="contact-links">
+    <a class="contact-link" href="tel:010-5444-0915">
+      <span class="contact-link-label">Mobile</span>
+      <span class="contact-link-value">010-5444-0915</span>
+    </a>
+    <a class="contact-link" href="mailto:skytonic@gmail.com">
+      <span class="contact-link-label">Email</span>
+      <span class="contact-link-value">skytonic@gmail.com</span>
+    </a>
+    <a class="contact-link" href="http://spottr.kr" target="_blank">
+      <span class="contact-link-label">Project</span>
+      <span class="contact-link-value">spottr.kr</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2026 Kim Jooncheol · FP&A Portfolio</span>
+  <span class="footer-tag">서울 노원구 · 경력 14년 8개월</span>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
